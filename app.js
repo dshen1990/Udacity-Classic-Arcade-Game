@@ -11,6 +11,25 @@ var Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
 };
 
+Enemy.prototype.checkCollision = function(player) {
+
+    var enemy = this;
+    // check collision
+
+    //console.log(this);
+    //debugger;
+
+    if (player.y + 131 >= enemy.y + 90 &&
+        player.x + 25 <= enemy.x + 88 &&
+        player.y + 73 <= enemy.y + 135 &&
+        player.x + 76 >= enemy.x + 11) {
+        console.log('collided');
+        player.x = 202.5;
+        player.y = 383;
+    }
+
+};
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -23,6 +42,8 @@ Enemy.prototype.update = function(dt) {
     if (this.x >= 505) {
         this.x = 0;
     }
+
+    this.checkCollision(player);
 
     // Check collision
     checkCollision(this);
@@ -42,8 +63,17 @@ var Player = function(x, y, speed) {
     this.sprite = 'images/char-boy.png';
 };
 
+Player.prototype.win = function() {
+    // your code here
+}
+
+// add a Player prototype stayOnBoard method here
+
 Player.prototype.update = function() {
     // function does not need
+
+    // call the Player's win method here
+    // call the Player's stayOnBoard method here
 };
 
 // Make the player and display score
@@ -55,21 +85,27 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(KEY) {
+
+    var player = this;
+    //console.log(this);
+
     if (KEY === 'left') {
-        this.x -= player.speed;
+        player.x -= player.speed;
     }
     if (KEY === 'up') {
-        this.y -= player.speed;
+        player.y -= player.speed;
     }
     if (KEY === 'right') {
-        this.x += player.speed;
+        player.x += player.speed;
     }
     if (KEY === 'down') {
-        this.y += player.speed;
+        player.y += player.speed;
     }
-    console.log('KEY is: ' + KEY);
+    //console.log('KEY is: ' + KEY);
 };
 // Display score
+
+
 var displayScoreLevel = function(aScore, aLevel) {
     var canvas = document.getElementsByTagName('canvas');
     var firstCanvasTag = canvas[0];
@@ -80,21 +116,14 @@ var displayScoreLevel = function(aScore, aLevel) {
     document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
 };
 
+// remove this function
 var checkCollision = function(anEnemy) {
-    // check collision
-    if (
-        player.y + 131 >= anEnemy.y + 90 &&
-        player.x + 25 <= anEnemy.x + 88 &&
-        player.y + 73 <= anEnemy.y + 135 &&
-        player.x + 76 >= anEnemy.x + 11) {
-        console.log('collided');
-        player.x = 202.5;
-        player.y = 383;
-    }
 
     // if the player reach the top,he/she will win
     // if the player wins, add 1 to the score and level
     // continue increasing the difficulty
+
+    // add this code as a prototype method, with, for example, the name "win" to the Player class
     if (player.y + 63 <= 0) {
         player.x = 202.5;
         player.y = 383;
@@ -111,6 +140,8 @@ var checkCollision = function(anEnemy) {
     }
 
     // player's running area of the canvas
+
+    // add this code as a prototype method, with, for example, the name "stayOnBoard" to the Player class
     if (player.y > 383) {
         player.y = 383;
     }
@@ -157,7 +188,7 @@ document.addEventListener('keydown', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-    console.log(allowedKeys[e.keyCode]);
+    // console.log(allowedKeys[e.keyCode]);
 });
 new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
 
