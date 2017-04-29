@@ -11,9 +11,8 @@ var Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
 };
 
-Enemy.prototype.checkCollision = function(player) {
+Enemy.prototype.checkCollision = function() {
 
-    var enemy = this;
     // check collision
 
     //console.log(this);
@@ -43,10 +42,10 @@ Enemy.prototype.update = function(dt) {
         this.x = 0;
     }
 
-    this.checkCollision(player);
+    this.checkCollision();
 
     // Check collision
-    checkCollision(this);
+    //this.checkCollision();
 };
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -64,8 +63,24 @@ var Player = function(x, y, speed) {
 };
 
 Player.prototype.win = function() {
-    // your code here
-}
+        // your code here
+        if (this.y + 63 <= 0) {
+            // update player properties
+            this.x = 202.5;
+            this.y = 383;
+            this.score += 1;
+            this.gameLevel += 1;
+
+            // reset scoreboard
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 505, 171);
+            console.log('current score: ' + player.score + ', current level: ' + player.gameLevel);
+
+            // add another sprite
+            allEnemies.push(new Enemy(0, Math.random() * 184 + 50, Math.random() * 256));
+        };
+    }
+    // remove this function
 
 // add a Player prototype stayOnBoard method here
 
@@ -115,8 +130,6 @@ var displayScoreLevel = function(aScore, aLevel) {
         ' / ' + 'Level: ' + aLevel;
     document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
 };
-
-// remove this function
 var checkCollision = function(anEnemy) {
 
     // if the player reach the top,he/she will win
@@ -124,6 +137,7 @@ var checkCollision = function(anEnemy) {
     // continue increasing the difficulty
 
     // add this code as a prototype method, with, for example, the name "win" to the Player class
+
     if (player.y + 63 <= 0) {
         player.x = 202.5;
         player.y = 383;
@@ -138,7 +152,6 @@ var checkCollision = function(anEnemy) {
         increaseDifficulty(score);
 
     }
-
     // player's running area of the canvas
 
     // add this code as a prototype method, with, for example, the name "stayOnBoard" to the Player class
@@ -152,7 +165,6 @@ var checkCollision = function(anEnemy) {
         player.x = 2.5;
     }
 };
-
 var increaseDifficulty = function(numEnemies) {
     // remove all previous enemies on canvas
     allEnemies.length = 0;
